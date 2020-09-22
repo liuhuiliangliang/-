@@ -1,0 +1,201 @@
+// 学生管理系统.cpp : 此文件包含 "main" 函数。程序执行将在此处开始并结束。
+//       姓名：刘会亮
+//       班级：物联网1班
+//       学号：2017122104238
+#include "pch.h"
+#include <iostream>
+#include <string>
+#include <istream>
+#include <conio.h>
+#include <cstdlib>
+using namespace std;
+typedef struct MyStruct
+{
+	string name;
+	float num;//学号
+	int age;
+	int score;
+	struct MyStruct *next;
+}Node;
+Node *Head = NULL;
+//加入学生信息
+void Inputstudent() {
+	system("cls");
+	Node *newNode = new Node;//分配一块内存!) 
+	newNode->next = NULL;
+	Node *p = Head;
+	//遍历找到尾节点
+	while (p != NULL && p->next != NULL) {
+		p = p->next;
+	}
+	//将信息点插入
+	if (Head == NULL)
+		Head = newNode;
+	else
+		p->next = newNode;
+	cout << "请输入学生姓名 学号 年龄 分数：" << endl;
+	cin >> newNode->name >> newNode->num >> newNode->age >> newNode->score;
+	cout << "信息录入成功" << endl;
+	system("pause");
+	system("cls");
+}
+//打印学生信息
+void Printstudent() {
+	system("cls");
+	Node *node = Head;
+	while (node != NULL) {
+		cout << "姓名：" << node->name << " " << "年龄：" << node->age << " " << "学号:" << node->num << " " << "分数:" << node->score << " " << endl;
+		node = node->next;
+	}
+	system("pause");
+	system("cls");
+}
+//删除学生信息
+void Deletestudent() {
+	system("cls");
+	cout << "请输入要删除的学生姓名：" << endl;
+	//Node *date = new Node;
+	string date;
+	Node *p = new Node;
+	Node *node = Head;
+	cin >> date;
+	if (node == NULL)//空表直接返回
+		return;
+	if (node->name == date)//如果是第一个节点
+	{
+		Head = node->next;
+		delete node;
+	}
+	else {
+		while (node->name != date && node->next != NULL) {//查找节点
+			p = node;
+			node = node->next;
+		}
+		if (node->name == date) {
+			p->next = node->next;
+			delete node;
+		}
+	}
+	cout << "删除成功！" << endl;
+	system("pause");
+	system("cls");
+}
+//修改学生信息
+void Alterstudent() {
+	system("cls");
+	cout << "请输入要修改的学生姓名：" << endl;
+	Node *n = new Node;
+	Node *node = Head;
+	cin >> n->name;
+	while (node != NULL) {
+		if (node->name == n->name) {
+			cout << "请输入修改后的姓名 学号 年龄 分数：" << endl;
+			cin >> n->name >> n->num >> n->age >> n->score;
+			node->name = n->name;
+			node->age = n->age;
+			node->num = n->num;
+			node->score = n->score;
+			delete n;
+			break;
+		}
+		node = node->next;
+	}
+	system("pause");
+	system("cls");
+}
+//查找学生
+void Searchstudent() {
+	system("cls");
+	cout << "请输入要查找的学生姓名：" << endl;
+	string n;
+	Node *node = Head;
+	cin >> n;
+	while (node != NULL) {
+		if (node->name == n) {
+			cout << "姓名：" << node->name<<" "<< "学号：" << node->num << " " << "年龄：" << node->age << " " << "分数：" << node->score << endl;
+			break;
+		}
+		node = node->next;
+	}
+	system("pause");
+	system("cls");
+}
+//统计学生人数
+int Countstudent() {
+	system("cls");
+	int count = 0;
+	Node *p = Head;
+	while (p != NULL) {
+		count++;
+		p = p->next;
+	}
+	//system("pause");
+	system("cls");
+	return count;
+}
+//成绩排序
+/*void Sortscore() {
+	int a[100];
+	int p;
+	int i;
+	Printstudent();
+	for (i = 0; i <= 100; i++) {
+		a[i] = node->score;
+		node = node->next;
+	}
+	for (int j = 0; j <= i; j++) {
+		if (a[i] < a[i + 1]) {
+			p = a[i];
+			a[i] = a[i + 1];
+			a[i + 1] = p;
+		}
+	}
+}*/
+void Welcome() {
+	cout << "     欢迎使用学生管理系统     " << endl;
+	cout << "        请选择功能列表     " << endl;
+	cout << "        1、录入学生信息     " << endl;
+	cout << "        2、打印学生信息     " << endl;
+	cout << "        3、删除学生信息     " << endl;
+	cout << "        4、统计学生信息     " << endl;
+	cout << "        5、查找学生信息     " << endl;
+	cout << "        6、修改学生信息     " << endl;
+	cout << "        0、退出学生系统     " << endl;
+}
+int main()
+{
+	char ch;
+	while (1) {
+		Welcome();
+		cin >> ch;
+		if (ch =='0')
+			break;
+		switch (ch)
+		{
+		case '1': Inputstudent(); break;
+		case '2': Printstudent(); break;
+		case '3': Deletestudent(); break;
+		case '4':cout << "总人数：" << " " << Countstudent() << endl; break;
+		case '5': Searchstudent(); break;
+		case '6':  Alterstudent(); break;
+		case'0':break;
+		default:
+			system("cls");
+			cout << "不好意思，您的输入有误，请重新输入：" << endl;
+			break;
+		}
+	}
+	return 0;
+}
+
+
+// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
+// 调试程序: F5 或调试 >“开始调试”菜单
+
+// 入门提示: 
+//   1. 使用解决方案资源管理器窗口添加/管理文件
+//   2. 使用团队资源管理器窗口连接到源代码管理
+//   3. 使用输出窗口查看生成输出和其他消息
+//   4. 使用错误列表窗口查看错误
+//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
+//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件
